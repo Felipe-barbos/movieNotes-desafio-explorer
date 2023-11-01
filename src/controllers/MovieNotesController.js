@@ -7,7 +7,7 @@ class MovieNotesController {
 
   async create(request, response) {
     const { title, description, rating, tags } = request.body;
-    const { user_id } = request.params;
+    const { id: user_id } = request.user;
 
     if (!title) {
       throw new AppError("Título não definido!");
@@ -65,7 +65,7 @@ class MovieNotesController {
   }
 
   async delete(request, response) {
-    const { user_id } = request.query;
+    const { id: user_id } = request.user;
     const { id } = request.params;
 
     const movieNote = await knex("movie_notes").where({ id }).first();
@@ -84,7 +84,8 @@ class MovieNotesController {
 
 
   async index(request, response) {
-    const { user_id, title, tags } = request.query;
+    const { title, tags } = request.query;
+    const { id: user_id } = request.user;
 
     let movieNotes;
 

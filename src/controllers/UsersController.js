@@ -54,7 +54,7 @@ class UsersController {
 
   async update(request, response) {
     const { name, email, password, old_password } = request.body
-    const { id } = request.params;
+    const { id } = request.user;
 
 
     //buscando o usuário no BD
