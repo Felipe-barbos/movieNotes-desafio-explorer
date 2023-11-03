@@ -5,6 +5,8 @@ const AppError = require("./utils/AppError");
 
 const database = require("./database/sqlite");
 
+const uploadConfig = require("./configs/upload");
+
 
 
 // executando as migrations
@@ -16,6 +18,8 @@ const app = express();
 
 
 app.use(express.json());
+
+app.use("/files", express.static(uploadConfig.UPLOADS_FOLDER));
 
 
 app.use(routes);
@@ -42,7 +46,7 @@ app.use((error, request, response, next) => {
 
 
 
-const PORT = 8888;
+const PORT = 7777;
 
 app.listen(PORT, () => console.log("Server is running!"));
 
