@@ -11,9 +11,9 @@ movieNotesRoutes.post("/create/", ensureAuthenticated, movieNotesController.crea
 
 movieNotesRoutes.get("/:id", movieNotesController.show);
 
-movieNotesRoutes.delete("/delete/:id", movieNotesController.delete);
+movieNotesRoutes.delete("/delete/:id", ensureAuthenticated, movieNotesController.delete);
 
-movieNotesRoutes.get("/", movieNotesController.index);
+movieNotesRoutes.get("/", ensureAuthenticated, movieNotesController.index);
 
 
 module.exports = movieNotesRoutes;
