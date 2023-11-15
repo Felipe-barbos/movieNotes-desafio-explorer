@@ -1,3 +1,4 @@
+const { hash } = require("bcryptjs");
 const knex = require("../database/knex");
 
 class UserRepository {
@@ -10,6 +11,12 @@ class UserRepository {
   }
 
   async createUser({ name, email, password }) {
+
+
+    //convertendo a senha para o hash
+    const hashPassword = await hash(password, 8);
+
+
     const [user_id] = await knex("users").insert({
       name,
       email,

@@ -12,19 +12,14 @@ class UsersController {
   async create(request, response) {
     const { name, email, password } = request.body;
 
-    const userRepository = UserRepository();
+    const userRepository = new UserRepository();
 
     //verificando se o e-mail é válido
     if (!email.includes("@") || !email.includes(".")) {
       throw new AppError("Digite um e-mail válido");
     }
 
-    const checkUserExists = await userRepository.findByEmail(email);
-
-    if (checkUserExists) {
-      throw new AppError("Este e-mail já está em uso.");
-    }
-
+    const checkuser = await userRepository.findByEmail(email);
 
     if (checkuser) {
       throw new AppError("Este e-mail já está em uso");
@@ -42,7 +37,7 @@ class UsersController {
 
 
     //criando um usuário no BD
-    const user_id = await userRepository.create({ name, email, password: hashPassword });
+    const user_id = await userRepository.createUser({ name, email, password: hashPassword });
 
     response.json({
       message: "Usuário criado",
