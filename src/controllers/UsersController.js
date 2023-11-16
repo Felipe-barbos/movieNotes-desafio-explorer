@@ -5,6 +5,9 @@ const AppError = require("../utils/AppError");
 const knex = require("../database/knex");
 
 const UserRepository = require("../repositories/UserRepository");
+const UserCreateService = require("../services/UserCreateService");
+
+
 
 
 class UsersController {
@@ -13,31 +16,11 @@ class UsersController {
     const { name, email, password } = request.body;
 
     const userRepository = new UserRepository();
-
-    //verificando se o e-mail é válido
-    if (!email.includes("@") || !email.includes(".")) {
-      throw new AppError("Digite um e-mail válido");
-    }
-
-    const checkuser = await userRepository.findByEmail(email);
-
-    if (checkuser) {
-      throw new AppError("Este e-mail já está em uso");
-    }
+    const userCreateService = new UserCreateService(userRepository);
 
 
-    //verificando se a senha contém menos que 8 caracteres
-    if (password.length < 8) {
-      throw new AppError("Senha somente com 8 caracteres ou mais!");
-    }
+    const user_id = await userCreateService.execute({ name, email, password });
 
-
-    //convertendo a senha para o hash
-    const hashPassword = await hash(password, 8);
-
-
-    //criando um usuário no BD
-    const user_id = await userRepository.createUser({ name, email, password: hashPassword });
 
     response.json({
       message: "Usuário criado",
